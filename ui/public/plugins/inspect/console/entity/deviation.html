@@ -12,28 +12,30 @@
                     <td data-bind="text: deviationActorPath"></td>
                 </tr>
                 <tr>
-                    <th>Reason</th>
+                    <th style="vertical-align: top;">Reason</th>
                     <td class="fulltext" data-bind="text: deviationReason"></td>
                 </tr>
             </table>
             <h2>Trace Tree</h2>
             <div class="traceTree">
-                <div data-bind="foreach: {data: events}">
-                    <div class="event" data-bind="style: {paddingLeft: paddingSize}">
-                        <div data-bind="if: systemEvent == 0">
-                            <div class="type" data-bind="text: type"></div>
-                            <div><span class="label">Time</span><span class="value" data-bind="text: timestamp"></span></div>
-                            <div data-bind="visible: actor.length > 0"><span class="label">Actor</span><span class="value" data-bind="text: actor"></span></div>
-                            <div data-bind="visible: message.length > 0"><span class="label">Message</span><span class="value" data-bind="text: message"></span></div>
-                            <div data-bind="visible: reason.length > 0"><span class="label">Reason</span><span class="value" data-bind="text: reason"></span></div>
-                        </div>
-                        <div class="type" data-bind="if: systemEvent == 1">
-                            <span class="systemType" data-bind="text: type"></span>
-                            [<span class="systemValue" data-bind="text: timestamp"></span>&nbsp;<span class="systemValue" data-bind="text: actor"></span>]
-                        </div>
-                    </div>
-                </div>
+                <div data-bind="html: events"></div>
             </div>
         </div>
     </section>
+    <footer class="filters fourFilters">
+        <li>
+            <label><input type="checkbox" data-bind="checked: showSystemMessages"> Show system messages</label>
+        </li>
+        <li>
+            <label><input type="checkbox" data-bind="checked: showNanoSeconds"> Show nanoseconds</label>
+        </li>
+        <li>
+            <label><input type="checkbox" data-bind="checked: showActorSystems"> Show actor systems</label>
+        </li>
+        <li>
+            <label><input type="checkbox" data-bind="checked: showTraceInformation"> Show trace information</label>
+        </li>
+    </footer>
 </article>
+
+
