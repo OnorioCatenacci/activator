@@ -15,6 +15,8 @@ import activator.analytics.rest.http.SortingHelpers.{ Descending, Ascending, Sor
 import scala.util.{ Failure, Success, Try }
 import akka.event.LoggingAdapter
 import scala.util.matching.Regex
+import console.ClientModuleHandler.{ DeviationModule, RequestModule }
+import akka.event.LoggingAdapter
 
 trait ClientHandlerBase extends Actor with ActorLogging with ClientModuleHandler {
   import ClientController._
