@@ -72,11 +72,7 @@ object ClientModuleHandler {
 
   implicit def toDeviationModuleInfo(in: RawModuleInformation): Try[DeviationModuleInfo] =
     Try {
-      DeviationModuleInfo(in.scope,
-        in.modifiers,
-        in.time,
-        in.dataFrom,
-        in.traceId)
+      DeviationModuleInfo(in.eventId.get)
     }
 
   implicit def toDeviationsModuleInfo(in: RawModuleInformation): Try[DeviationsModuleInfo] =

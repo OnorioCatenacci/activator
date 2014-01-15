@@ -17,6 +17,7 @@ import akka.event.LoggingAdapter
 import scala.util.matching.Regex
 import console.ClientModuleHandler.{ DeviationModule, RequestModule }
 import akka.event.LoggingAdapter
+import com.typesafe.trace.uuid.UUID
 
 trait ClientHandlerBase extends Actor with ActorLogging with ClientModuleHandler {
   import ClientController._
@@ -99,7 +100,8 @@ trait RequestHelpers { this: ActorLogging =>
           dataFrom = i.dataFrom,
           sortCommand = i.sortCommand,
           sortDirection = i.sortDirection,
-          traceId = i.traceId)
+          traceId = i.traceId,
+          eventId = i.eventId)
         case None => sys.error(s"Could not find requested module: ${i.name}")
       }
     }
@@ -128,6 +130,11 @@ object JsonHandler {
   import play.api.libs.functional.syntax._
   import SortDirections._
 
+  implicit val uuidReads: Reads[UUID] = Reads {
+    case JsString(s) => JsSuccess(new UUID(s))
+    case x @ _ => JsError(s"invalid input value for UUID: $x")
+  }
+
   implicit val scopeReads = (
     (__ \ "node").readNullable[String] and
     (__ \ "actorSystem").readNullable[String] and
@@ -144,6 +151,7 @@ object JsonHandler {
   implicit val innerModuleReads = (
     (__ \ "name").read[String] and
     (__ \ "traceId").readNullable[String] and
+    (__ \ "eventId").readNullable[UUID] and
     (__ \ "paging").readNullable[PagingInformation] and
     (__ \ "sortCommand").readNullable[String] and
     (__ \ "sortDirection").readNullable[SortDirection] and
@@ -172,6 +180,7 @@ case class InternalScope(
 case class InnerModuleInformation(
   name: String,
   traceId: Option[String],
+  eventId: Option[UUID],
   pagingInformation: Option[PagingInformation],
   sortCommand: Option[String],
   sortDirection: Option[SortDirection],
@@ -218,8 +227,8 @@ case class RawModuleInformation(
   sortCommand: Option[String],
   sortDirection: Option[SortDirection],
   dataFrom: Option[Long] = None,
-  traceId: Option[String] = None) extends ModuleInformationBase {
-}
+  traceId: Option[String] = None,
+  eventId: Option[UUID] = None)
 
 case class PagingInformation(offset: Int, limit: Int)
 

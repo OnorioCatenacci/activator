@@ -17,10 +17,10 @@ object DeviationHandler {
 trait DeviationHandlerBase extends RequestHandlerLike[DeviationHandler.DeviationModuleInfo] {
   import DeviationHandler._
 
-  def useDeviation(sender: ActorRef, traces:Seq[TraceEvent]): Unit
+  def useDeviation(sender: ActorRef, traces: Seq[TraceEvent]): Unit
 
   def onModuleInformation(sender: ActorRef, mi: DeviationModuleInfo): Unit = {
-    useDeviation(sender, repository.traceRepository.event(mi.eventID).map(ed =>repository.traceRepository.trace(ed.trace))
+    useDeviation(sender, repository.traceRepository.event(mi.eventID).map(ed => repository.traceRepository.trace(ed.trace))
       .getOrElse(Seq.empty[TraceEvent]))
   }
 }
@@ -28,7 +28,7 @@ trait DeviationHandlerBase extends RequestHandlerLike[DeviationHandler.Deviation
 class DeviationHandler(builderProps: Props) extends RequestHandler[DeviationHandler.DeviationModuleInfo] with DeviationHandlerBase {
   val builder = context.actorOf(builderProps, "deviationBuilder")
 
-  def useDeviation(sender: ActorRef, traces:Seq[TraceEvent]): Unit = {
-    builder ! DeviationResult(sender,traces)
+  def useDeviation(sender: ActorRef, traces: Seq[TraceEvent]): Unit = {
+    builder ! DeviationResult(sender, traces)
   }
 }

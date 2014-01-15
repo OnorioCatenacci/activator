@@ -37,5 +37,5 @@ def handle(receiver: ActorRef, mi: ModuleInformation): (ActorRef, JsValue) = {
 }
 
 object DeviationJsonBuilder {
-  case class DeviationResult(receiver: ActorRef, traces:Seq[TraceEvent])
+  case class DeviationResult(receiver: ActorRef, traces: Seq[TraceEvent])
 }
