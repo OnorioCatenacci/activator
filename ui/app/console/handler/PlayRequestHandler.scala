@@ -12,7 +12,7 @@ object PlayRequestHandler {
     modifiers: ScopeModifiers,
     time: TimeRange,
     dataFrom: Option[Long],
-    traceId: Option[String]) extends ModuleInformationBase
+    traceId: Option[String]) extends ScopedModuleInformationBase
 }
 
 trait PlayRequestHandlerBase extends RequestHandler[PlayRequestHandler.PlayRequestModuleInfo] {

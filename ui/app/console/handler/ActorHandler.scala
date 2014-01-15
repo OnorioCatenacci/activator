@@ -13,7 +13,7 @@ object ActorHandler {
     modifiers: ScopeModifiers,
     time: TimeRange,
     dataFrom: Option[Long],
-    traceId: Option[String]) extends ModuleInformationBase
+    traceId: Option[String]) extends ScopedModuleInformationBase
 }
 
 trait ActorHandlerBase extends RequestHandlerLike[ActorHandler.ActorModuleInfo] {

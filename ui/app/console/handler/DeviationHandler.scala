@@ -6,13 +6,10 @@ package handler
 
 import akka.actor.{ ActorRef, Props }
 import activator.analytics.data.{ TimeRange, Scope, ActorStats }
+import com.typesafe.trace.uuid.UUID
 
 object DeviationHandler {
-  case class DeviationModuleInfo(scope: Scope,
-    modifiers: ScopeModifiers,
-    time: TimeRange,
-    dataFrom: Option[Long],
-    traceId: Option[String]) extends ModuleInformationBase
+  case class DeviationModuleInfo(eventID: UUID) extends ModuleInformationBase
 }
 
 trait DeviationHandlerBase extends RequestHandlerLike[DeviationHandler.DeviationModuleInfo] {
@@ -21,7 +18,7 @@ trait DeviationHandlerBase extends RequestHandlerLike[DeviationHandler.Deviation
   def useDeviation(sender: ActorRef, )
 
   def onModuleInformation(sender: ActorRef, mi: DeviationModuleInfo): Unit = {
-    useDeviation(sender, ActorStats.concatenate(repository.actorStatsRepository.findWithinTimePeriod(mi.time, mi.scope), mi.time, mi.scope))
+    useDeviation(sender, ActorStats.concatenate(repository.traceRepository.event().findWithinTimePeriod(mi.time, mi.scope), mi.time, mi.scope))
   }
 }
 
