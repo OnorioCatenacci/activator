@@ -178,7 +178,9 @@ case class InnerModuleInformation(
   dataFrom: Option[Long],
   scope: InternalScope)
 
-trait ModuleInformationBase {
+trait ModuleInformationBase
+
+trait ScopedModuleInformationBase extends ModuleInformationBase {
   def scope: Scope
   def modifiers: ScopeModifiers
   def time: TimeRange
