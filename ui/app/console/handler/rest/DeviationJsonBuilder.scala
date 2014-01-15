@@ -5,6 +5,7 @@ package console.handler.rest
 
 import akka.actor.ActorRef
 import console.ClientController.Update
+import com.typesafe.trace.TraceEvent
 
 class DeviationJsonBuilder extends JsonBuilderActor {
   import DeviationJsonBuilder._
@@ -36,5 +37,5 @@ def handle(receiver: ActorRef, mi: ModuleInformation): (ActorRef, JsValue) = {
 }
 
 object DeviationJsonBuilder {
-  case class DeviationResult(receiver: ActorRef)
+  case class DeviationResult(receiver: ActorRef, traces:Seq[TraceEvent])
 }
