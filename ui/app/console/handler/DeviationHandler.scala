@@ -15,17 +15,20 @@ object DeviationHandler {
     traceId: Option[String]) extends ModuleInformationBase
 }
 
-trait DeviationHandlerBase extends RequestHandler[DeviationHandler.DeviationModuleInfo] {
+trait DeviationHandlerBase extends RequestHandlerLike[DeviationHandler.DeviationModuleInfo] {
   import DeviationHandler._
 
+  def useDeviation(sender: ActorRef, )
+
   def onModuleInformation(sender: ActorRef, mi: DeviationModuleInfo): Unit = {
+    useDeviation(sender, ActorStats.concatenate(repository.actorStatsRepository.findWithinTimePeriod(mi.time, mi.scope), mi.time, mi.scope))
   }
 }
 
-class DeviationHandler(builderProps: Props) extends DeviationHandlerBase {
+class DeviationHandler(builderProps: Props) extends RequestHandler[ActorHandler.DeviationModuleInfo] with DeviationHandlerBase {
   val builder = context.actorOf(builderProps, "deviationBuilder")
 
   def useActorStats(sender: ActorRef, stats: ActorStats): Unit = {
-
+    stats.metrics.deviationDetails.
   }
 }
